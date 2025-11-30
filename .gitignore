@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+venv/
+
+# Vector databases
+vector_store/
+chroma.sqlite3
+*.faiss
+*.pkl
+
+# PDF & Dataset files
+data/pdf/
+data/text_files/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Large model files
+models/
