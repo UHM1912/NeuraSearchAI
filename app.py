@@ -138,15 +138,16 @@ button:hover {
     box-shadow:
         0 0 30px rgba(34,197,94,0.75) !important;
 }
+import streamlit as st
+
 st.markdown("""
 <style>
 
 /* ---------- Answer container fix ---------- */
-
 .answer-box {
     background: rgba(10,16,32,0.88);
     color: white !important;
-    padding:20px;
+    padding: 20px;
     border-radius: 16px;
     font-size: 16px;
     line-height: 1.6;
@@ -154,7 +155,6 @@ st.markdown("""
 }
 
 /* ---------- Bullet points & text color ---------- */
-
 .answer-box ul,
 .answer-box li,
 .answer-box p,
@@ -162,6 +162,19 @@ st.markdown("""
     color: #ffffff !important;
     opacity: 1 !important;
 }
+
+/* Optional animation */
+.answer-box {
+    animation: fadeIn 0.7s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 
 /* ---------- Streamlit markdown global fix ---------- */
 
@@ -445,6 +458,7 @@ if ask and query.strip():
 
 
    
+
 
 
 
