@@ -74,46 +74,31 @@ def rag_advanced(
     query,
     retriever,
     llm,
-    top_k=6,
+    top_k=4,
     min_score=0.1,
     return_context=True,
 ):
 
+    # Retrieve relevant chunks
     results = retriever.invoke(query)
 
-    # 🔎 Safety fallback for name searches
-    q = query.lower()
-    if "utkarsh misra" in q:
-        keyword_hits = [
-            d for d in chunks
-            if "utkarsh misra" in d.page_content.lower()
-        ]
-        if keyword_hits:
-            results = keyword_hits[:6]
-
-    if not results:
-        return {
-            "answer": "⚠️ No relevant content was found in the loaded PDFs or text files.",
-            "confidence": 0,
-            "sources": [],
-            "context": ""
-        }
-
-
+    # Build context
     context = "\n\n".join(doc.page_content for doc in results)
 
-prompt = f"""
-You are a professional documentation assistant.
+    if not context.strip():
+        return {
+            "answer": "⚠️ This information is not available in the uploaded documents.",
+            "confidence": 0.0,
+            "sources": [],
+            "context": "",
+        }
 
-Use the CONTEXT to answer the QUESTION.
+    # Prompt
+    prompt = f"""
+You are a professional research assistant.
 
-Rules:
-- Combine and rephrase available context into a smooth detailed response.
-- If the context is very short, provide a full explanatory paragraph
-  without adding new facts.
-- Do NOT hallucinate factual details not present.
-- If there is no relevant context, say clearly:
-  "This information is not available in uploaded documents."
+Use the CONTEXT to answer the QUESTION clearly and in detail.
+If the CONTEXT is short, expand the explanation naturally without adding new facts.
 
 CONTEXT:
 {context}
@@ -121,22 +106,25 @@ CONTEXT:
 QUESTION:
 {query}
 
-Answer with a detailed 4–6 sentence paragraph:
+ANSWER:
 """
 
-
+    # ✅ This line MUST NOT be extra-indented
     response = llm.invoke(prompt)
+
     answer = response.content if hasattr(response, "content") else response
 
-
-    sources = [
-        {
-            "source": doc.metadata.get("source", "unknown"),
-            "page": doc.metadata.get("page", "-"),
-            "preview": doc.page_content[:200] + "..."
-        }
-        for doc in results
-    ]
+    # Build sources
+    sources = []
+    for doc in results:
+        sources.append(
+            {
+                "source": doc.metadata.get("source", "unknown"),
+                "page": doc.metadata.get("page", "-"),
+                "score": 1.0,
+                "preview": doc.page_content[:200] + "...",
+            }
+        )
 
     return {
         "answer": answer,
@@ -144,6 +132,7 @@ Answer with a detailed 4–6 sentence paragraph:
         "sources": sources,
         "context": context if return_context else None,
     }
+
 
 
 
