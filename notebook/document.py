@@ -12,7 +12,7 @@ import os
 # ---------- LLM ----------
 llm = ChatGroq(
     api_key=os.environ["GROQ_API_KEY"],
-    model="llama3-8b-8192",
+    model="llama-3.1-8b-instant",
     temperature=0,
     max_tokens=512,      # ✅ prevents overflow
     timeout=60,
@@ -133,5 +133,6 @@ ANSWER:
         "sources": sources,
         "context": context if return_context else None,
     }
+
 
 
