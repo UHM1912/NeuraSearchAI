@@ -146,7 +146,7 @@ st.markdown("""
 .answer-box {
     background: rgba(10,16,32,0.88);
     color: white !important;
-    padding: 20px;
+    padding:20px;
     border-radius: 16px;
     font-size: 16px;
     line-height: 1.6;
@@ -445,6 +445,7 @@ if ask and query.strip():
 
 
    
+
 
 
 
