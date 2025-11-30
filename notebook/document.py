@@ -102,8 +102,18 @@ def rag_advanced(
 
     context = "\n\n".join(doc.page_content for doc in results)
 
-    prompt = f"""
-You are answering questions only using the provided CONTEXT.
+prompt = f"""
+You are a professional documentation assistant.
+
+Use the CONTEXT to answer the QUESTION.
+
+Rules:
+- Combine and rephrase available context into a smooth detailed response.
+- If the context is very short, provide a full explanatory paragraph
+  without adding new facts.
+- Do NOT hallucinate factual details not present.
+- If there is no relevant context, say clearly:
+  "This information is not available in uploaded documents."
 
 CONTEXT:
 {context}
@@ -111,8 +121,9 @@ CONTEXT:
 QUESTION:
 {query}
 
-ANSWER:
+Answer with a detailed 4–6 sentence paragraph:
 """
+
 
     response = llm.invoke(prompt)
     answer = response.content if hasattr(response, "content") else response
@@ -133,6 +144,7 @@ ANSWER:
         "sources": sources,
         "context": context if return_context else None,
     }
+
 
 
 
