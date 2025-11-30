@@ -11,6 +11,11 @@ st.set_page_config(
     layout="wide"
 )
 
+uploaded_files = st.file_uploader(
+    "📂 Upload your PDFs",
+    type="pdf",
+    accept_multiple_files=True
+)
 
 
 # ---------------------------
@@ -397,3 +402,4 @@ if ask and query.strip():
 
 
    
+
