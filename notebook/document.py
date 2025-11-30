@@ -5,11 +5,15 @@ from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.llms import Ollama
+from langchain_groq import ChatGroq
+import os
 
 
 # ---------- LLM ----------
-llm = Ollama(model="mistral")   # Make sure: ollama pull mistral
+llm = ChatGroq(
+    api_key=os.environ["GROQ_API_KEY"],
+    model="llama3-8b-8192"
+)   
 
 
 # ---------- LOAD ALL DOCUMENTS ----------
@@ -125,3 +129,4 @@ ANSWER:
         "sources": sources,
         "context": context if return_context else None,
     }
+
