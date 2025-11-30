@@ -97,8 +97,11 @@ def rag_advanced(
     prompt = f"""
 You are a professional research assistant.
 
-Use the CONTEXT to answer the QUESTION clearly and in detail.
-If the CONTEXT is short, expand the explanation naturally without adding new facts.
+Use the CONTEXT to answer the QUESTION clearly, accurately, and in detail.
+
+If the CONTEXT is brief, expand the explanation naturally
+but do not add new or unrelated information.
+
 
 CONTEXT:
 {context}
@@ -132,6 +135,7 @@ ANSWER:
         "sources": sources,
         "context": context if return_context else None,
     }
+
 
 
 
